@@ -1,0 +1,75 @@
+{
+  "algo": "QRDQN",
+  "seed": 3,
+  "timesteps": 200000,
+  "env_config": {
+    "n_nodes": 5,
+    "max_steps": 150,
+    "patch_delay_steps": 2
+  },
+  "train_config": {
+    "timesteps": 200000,
+    "policy_by_algo": {
+      "PPO": "MlpPolicy",
+      "DQN": "MlpPolicy",
+      "A2C": "MlpPolicy",
+      "QRDQN": "MlpPolicy",
+      "RecurrentPPO": "MlpLstmPolicy"
+    },
+    "model_kwargs": {}
+  },
+  "airs_config_dataclass": {
+    "n_nodes": 5,
+    "max_steps": 150,
+    "p_adv_base": [
+      0.05,
+      0.12,
+      0.1,
+      0.08,
+      0.0
+    ],
+    "m_isolated": 0.7,
+    "m_patched": 0.4,
+    "m_quarantined": 0.55,
+    "m_rate_limited_stage3plus": 0.6,
+    "m_block_ip_step": 0.6,
+    "m_monitoring": [
+      1.0,
+      0.85,
+      0.7
+    ],
+    "p_regress_base": 0.01,
+    "p_regress_bonus_quarantine": 0.03,
+    "p_regress_bonus_mon2": 0.02,
+    "patch_delay_steps": 2,
+    "p_quarantine_success": 0.85,
+    "p_quarantine_roll_back_stage": 0.6,
+    "intensity_drift": 0.03,
+    "intensity_control_k": 0.08,
+    "breach_on_stage4": true,
+    "contain_hold_steps": 5,
+    "intensity_contained_threshold": 0.1,
+    "cost_noop": 0.0,
+    "cost_block_ip": 0.05,
+    "cost_isolate": 0.2,
+    "cost_quarantine": 0.08,
+    "cost_monitoring": 0.03,
+    "cost_patch": 0.12,
+    "cost_rate_limit": 0.1,
+    "avail_isolate": 0.5,
+    "avail_rate_limit": 0.25,
+    "avail_patching": 0.1,
+    "alpha_security": 1.0,
+    "beta_cost": 0.5,
+    "gamma_avail": 0.7,
+    "stage_weight": [
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "breach_penalty": 5.0,
+    "contain_bonus": 1.0
+  }
+}
