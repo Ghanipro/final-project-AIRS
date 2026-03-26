@@ -1,7 +1,10 @@
-gymnasium
+pytest
+numpy
+pyyaml
+tqdm
 stable-baselines3
 sb3-contrib
+gymnasium
+pandas
 streamlit
 plotly
-pandas
-pyyaml
