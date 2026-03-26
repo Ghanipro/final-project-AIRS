@@ -13,5 +13,5 @@ To install the required packages, run:
 ```
 pip install -r requirements.txt
 ```
-### Train (full mode)
+## Train (full mode)
 python scripts/train_all.py
