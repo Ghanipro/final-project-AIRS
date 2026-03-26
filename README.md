@@ -13,5 +13,11 @@ To install the required packages, run:
 ```
 pip install -r requirements.txt
 ```
-## Train (full mode)
+### Train (full mode)
 python scripts/train_all.py
+
+### Evaluate (full mode)
+python scripts/evaluate_all.py
+
+### Dashboard
+streamlit run src/dashboard/app.py
