@@ -1,0 +1,15 @@
+env:
+  n_nodes: 5
+  max_steps: 150
+  patch_delay_steps: 2
+
+train:
+  timesteps: 200000
+  policy: "MlpPolicy"
+  # Optional SB3 hyperparams go here per algo later
+  model_kwargs: {}
+
+eval:
+  episodes: 200
+
+seeds: [0, 1, 2, 3, 4]
