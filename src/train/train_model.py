@@ -10,6 +10,9 @@ import yaml
 from stable_baselines3 import PPO, DQN, A2C
 from sb3_contrib import RecurrentPPO, QRDQN
 
+from stable_baselines3.common.callbacks import EvalCallback, StopTrainingOnNoModelImprovement
+from stable_baselines3.common.monitor import Monitor
+
 from src.environment.airs_env import AIRSEnv, AIRSConfig
 
 
@@ -42,23 +45,69 @@ DEFAULT_POLICY_BY_ALGO = {
     "RecurrentPPO": "MlpLstmPolicy",
 }
 
+
 def train_one(algo: str, config_path: str, seed: int, out_dir: str = "data") -> str:
     cfg = load_config(config_path)
-    env_cfg = cfg["env"]
-    train_cfg = cfg["train"]
+    env_cfg = cfg.get("env", {})
+    train_cfg = cfg.get("train", {})
 
-    env = make_env(env_cfg, seed=seed)
-
+    timesteps = int(train_cfg.get("timesteps", 200000))
+    policy = train_cfg.get("policy_by_algo", {}).get(algo, DEFAULT_POLICY_BY_ALGO[algo])
     model_cls = ALGOS[algo]
 
-    # Use per-algo default, allow override via config
-    policy = train_cfg.get("policy_by_algo", {}).get(algo) or DEFAULT_POLICY_BY_ALGO[algo]
+    # Logging setup
+    log_cfg = cfg.get("logging", {})
+    log_root = log_cfg.get("log_root", "data/logs")
+    tb_name = log_cfg.get("tb_name", "AIRS")
+    os.makedirs(log_root, exist_ok=True)
 
+    run_name = f"{algo}_seed_{seed}"
+    run_dir = os.path.join(log_root, run_name)
+    os.makedirs(run_dir, exist_ok=True)
+
+    # Create env + monitor
+    env = make_env(env_cfg, seed)
+    env = Monitor(env, filename=os.path.join(run_dir, "monitor.csv"))
+
+    # Build model kwargs (global + per‑algo)
     model_kwargs = dict(train_cfg.get("model_kwargs", {}))
-    model = model_cls(policy, env, verbose=1, seed=seed, **model_kwargs)
+    per_algo = train_cfg.get("model_kwargs_by_algo", {}).get(algo, {})
+    model_kwargs.update(per_algo)
 
-    timesteps = int(train_cfg.get("timesteps", 200_000))
-    model.learn(total_timesteps=timesteps)
+    model = model_cls(
+        policy,
+        env,
+        verbose=1,
+        seed=seed,
+        tensorboard_log=log_root,
+        **model_kwargs
+    )
+
+    # Eval + Early stopping
+    eval_cfg = cfg.get("eval", {})
+    callback = None
+    if eval_cfg.get("enabled", True):
+        eval_env = make_env(env_cfg, seed + 999)
+        eval_env = Monitor(eval_env, filename=os.path.join(run_dir, "eval_monitor.csv"))
+
+        stop_callback = StopTrainingOnNoModelImprovement(
+            max_no_improvement_evals=eval_cfg.get("early_stop_patience", 4),
+            min_evals=1,
+            verbose=1
+        )
+
+        callback = EvalCallback(
+            eval_env,
+            best_model_save_path=os.path.join(run_dir, "best_model"),
+            log_path=os.path.join(run_dir, "eval_logs"),
+            eval_freq=eval_cfg.get("freq", 20000),
+            n_eval_episodes=eval_cfg.get("n_episodes", 20),
+            deterministic=True,
+            callback_on_new_best=stop_callback,
+            verbose=1
+        )
+
+    model.learn(total_timesteps=timesteps, callback=callback, tb_log_name=tb_name)
 
     save_root = os.path.join(out_dir, "models", algo, f"seed_{seed}")
     os.makedirs(save_root, exist_ok=True)

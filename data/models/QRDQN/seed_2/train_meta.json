@@ -1,14 +1,14 @@
 {
   "algo": "QRDQN",
   "seed": 2,
-  "timesteps": 200000,
+  "timesteps": 100000,
   "env_config": {
-    "n_nodes": 5,
+    "n_nodes": 10,
     "max_steps": 150,
     "patch_delay_steps": 2
   },
   "train_config": {
-    "timesteps": 200000,
+    "timesteps": 100000,
     "policy_by_algo": {
       "PPO": "MlpPolicy",
       "DQN": "MlpPolicy",
@@ -16,11 +16,55 @@
       "QRDQN": "MlpPolicy",
       "RecurrentPPO": "MlpLstmPolicy"
     },
-    "model_kwargs": {}
+    "model_kwargs_by_algo": {
+      "PPO": {
+        "learning_rate": 0.0003,
+        "n_steps": 1024,
+        "batch_size": 256,
+        "gamma": 0.99,
+        "gae_lambda": 0.95,
+        "ent_coef": 0.01
+      },
+      "A2C": {
+        "learning_rate": 0.0007,
+        "n_steps": 64,
+        "gamma": 0.99,
+        "ent_coef": 0.01
+      },
+      "DQN": {
+        "learning_rate": 0.0001,
+        "buffer_size": 200000,
+        "learning_starts": 5000,
+        "train_freq": 4,
+        "target_update_interval": 1000,
+        "exploration_fraction": 0.2,
+        "exploration_final_eps": 0.05
+      },
+      "QRDQN": {
+        "learning_rate": 0.0001,
+        "buffer_size": 200000,
+        "learning_starts": 5000,
+        "train_freq": 4,
+        "target_update_interval": 1000,
+        "exploration_fraction": 0.25,
+        "exploration_final_eps": 0.05
+      },
+      "RecurrentPPO": {
+        "learning_rate": 0.0003,
+        "n_steps": 128,
+        "batch_size": 128,
+        "gamma": 0.99,
+        "policy_kwargs": {
+          "lstm_hidden_size": 128,
+          "n_lstm_layers": 1
+        }
+      }
+    }
   },
   "airs_config_dataclass": {
-    "n_nodes": 5,
+    "n_nodes": 10,
     "max_steps": 150,
+    "patch_delay_steps": 2,
     "p_adv_base": [
       0.05,
       0.12,
@@ -28,6 +72,7 @@
       0.08,
       0.0
     ],
+    "p_regress_base": 0.01,
     "m_isolated": 0.7,
     "m_patched": 0.4,
     "m_quarantined": 0.55,
@@ -38,12 +83,9 @@
       0.85,
       0.7
     ],
-    "p_regress_base": 0.01,
-    "p_regress_bonus_quarantine": 0.03,
-    "p_regress_bonus_mon2": 0.02,
-    "patch_delay_steps": 2,
     "p_quarantine_success": 0.85,
     "p_quarantine_roll_back_stage": 0.6,
+    "p_patch_heal": 0.2,
     "intensity_drift": 0.03,
     "intensity_control_k": 0.08,
     "breach_on_stage4": true,
@@ -70,6 +112,103 @@
       1.0
     ],
     "breach_penalty": 5.0,
-    "contain_bonus": 1.0
+    "contain_bonus": 1.0,
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        5,
+        7
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        9,
+        0
+      ],
+      [
+        9,
+        2
+      ],
+      [
+        9,
+        5
+      ]
+    ],
+    "zones": [
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      4
+    ],
+    "node_types": [
+      0,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "criticality": [
+      0.6,
+      0.6,
+      0.4,
+      0.4,
+      0.4,
+      1.0,
+      0.8,
+      1.0,
+      0.7,
+      0.5
+    ],
+    "zone_adv_mul": {
+      "0": 1.2,
+      "1": 1.0,
+      "2": 0.9,
+      "3": 0.8,
+      "4": 0.6
+    }
   }
 }

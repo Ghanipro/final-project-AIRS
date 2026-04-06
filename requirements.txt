@@ -8,3 +8,4 @@ gymnasium
 pandas
 streamlit
 plotly
+networkx

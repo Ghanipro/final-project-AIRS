@@ -1,0 +1,235 @@
+{
+  "method": "QRDQN",
+  "seed": 4,
+  "episodes": 200,
+  "breach_rate": 1.0,
+  "contain_rate": 0.0,
+  "avg_return": -14.862549999999997,
+  "std_return": 1.4504661345711192,
+  "avg_ep_len": 9.745,
+  "avg_max_stage": 4.0,
+  "avg_security_loss": 0.993369318181818,
+  "avg_availability_loss": 0.0,
+  "avg_action_cost": 0.31234999999999996,
+  "action_counts": [
+    0,
+    0,
+    0,
+    200,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1749,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "action_counts_total": 1949,
+  "env_config": {
+    "n_nodes": 10,
+    "max_steps": 150,
+    "patch_delay_steps": 2
+  },
+  "airs_config": {
+    "n_nodes": 10,
+    "max_steps": 150,
+    "patch_delay_steps": 2,
+    "p_adv_base": [
+      0.05,
+      0.12,
+      0.1,
+      0.08,
+      0.0
+    ],
+    "p_regress_base": 0.01,
+    "m_isolated": 0.7,
+    "m_patched": 0.4,
+    "m_quarantined": 0.55,
+    "m_rate_limited_stage3plus": 0.6,
+    "m_block_ip_step": 0.6,
+    "m_monitoring": [
+      1.0,
+      0.85,
+      0.7
+    ],
+    "p_quarantine_success": 0.85,
+    "p_quarantine_roll_back_stage": 0.6,
+    "intensity_drift": 0.03,
+    "intensity_control_k": 0.08,
+    "breach_on_stage4": true,
+    "contain_hold_steps": 5,
+    "intensity_contained_threshold": 0.1,
+    "cost_noop": 0.0,
+    "cost_block_ip": 0.05,
+    "cost_isolate": 0.2,
+    "cost_quarantine": 0.08,
+    "cost_monitoring": 0.03,
+    "cost_patch": 0.12,
+    "cost_rate_limit": 0.1,
+    "avail_isolate": 0.5,
+    "avail_rate_limit": 0.25,
+    "avail_patching": 0.1,
+    "alpha_security": 1.0,
+    "beta_cost": 0.5,
+    "gamma_avail": 0.7,
+    "stage_weight": [
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "breach_penalty": 5.0,
+    "contain_bonus": 1.0,
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        5,
+        7
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        9,
+        0
+      ],
+      [
+        9,
+        2
+      ],
+      [
+        9,
+        5
+      ]
+    ],
+    "zones": [
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      4
+    ],
+    "node_types": [
+      0,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "criticality": [
+      0.6,
+      0.6,
+      0.4,
+      0.4,
+      0.4,
+      1.0,
+      0.8,
+      1.0,
+      0.7,
+      0.5
+    ],
+    "zone_adv_mul": {
+      "0": 1.2,
+      "1": 1.0,
+      "2": 0.9,
+      "3": 0.8,
+      "4": 0.6
+    }
+  },
+  "paths": {
+    "episodes_csv": "data\\results\\QRDQN\\seed_4\\episodes.csv"
+  }
+}
