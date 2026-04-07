@@ -329,7 +329,8 @@ class AIRSEnv(Env):
 
         breach = False
         if self.cfg.breach_on_stage4:
-            breach = np.any(self.c >= 4)
+            critical_mask = np.array(self.cfg.criticality) >= 0.9
+            breach = np.any((self.c >= 4) & critical_mask)
 
         contained = np.all(self.c == 0) and np.max(self.b) < self.cfg.intensity_contained_threshold
         if contained:

@@ -3,6 +3,26 @@ env:
   max_steps: 150
   patch_delay_steps: 2
 
+  # make attacker slower
+  p_adv_base: [0.03, 0.08, 0.08, 0.06, 0.0]
+  zone_adv_mul:
+    0: 1.05   # DMZ
+    1: 0.95   # User
+    2: 0.85   # Data
+    3: 0.75   # Admin
+    4: 0.60   # Security
+
+  # make recovery stronger
+  p_regress_base: 0.03
+  p_quarantine_success: 0.90
+  p_quarantine_roll_back_stage: 0.75
+  p_patch_heal: 0.35
+
+  intensity_drift: 0.015
+  intensity_control_k: 0.12
+
+  contain_hold_steps: 3
+
 train:
   timesteps: 100000
   policy_by_algo:
@@ -63,6 +83,5 @@ eval:
   freq: 20000           # evaluate every 20k steps
   n_episodes: 20
   early_stop_patience: 4   # stop after 4 evals with no improvement
-  min_delta: 0.01          # required improvement in mean reward
 
 seeds: [0, 1, 2, 3, 4]
