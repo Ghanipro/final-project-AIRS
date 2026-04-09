@@ -5,7 +5,7 @@ from src.eval.evaluate import evaluate_one, build_leaderboard
 
 from src.eval.evaluate import RL_ALGOS
 
-METHODS = RL_ALGOS + [f"{name}_Safe" for name in RL_ALGOS] + ["RuleBased"]
+METHODS = RL_ALGOS + ["RuleBased"]
 
 if __name__ == "__main__":
     with open("configs/airs_train.yaml", "r") as f:

@@ -15,6 +15,13 @@ if not os.path.exists(leaderboard_path):
 
 df = pd.read_csv(leaderboard_path)
 
+target_methods = ["PPO", "DQN", "A2C", "RuleBased"]
+df = df[df["method"].isin(target_methods)].copy()
+
+if df.empty:
+    st.error("No rows for PPO/DQN/A2C/RuleBased found in leaderboard. Re-run training and evaluation.")
+    st.stop()
+
 st.subheader("Leaderboard (per method x seed)")
 st.dataframe(df.sort_values(["breach_rate", "avg_return"], ascending=[True, False]), use_container_width=True)
 

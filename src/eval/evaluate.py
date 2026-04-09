@@ -10,15 +10,6 @@ import pandas as pd
 import yaml
 
 from stable_baselines3 import PPO, DQN, A2C
-try:
-    from sb3_contrib import RecurrentPPO  # type: ignore
-except Exception:
-    RecurrentPPO = None
-
-try:
-    from sb3_contrib import QRDQN  # type: ignore
-except Exception:
-    QRDQN = None
 
 from src.environment.airs_env import AIRSEnv, AIRSConfig
 from src.baselines.rule_based import rule_based_action
@@ -31,14 +22,8 @@ ALGOS = {
     "A2C": A2C,
 }
 
-if RecurrentPPO is not None:
-    ALGOS["RecurrentPPO"] = RecurrentPPO
-if QRDQN is not None:
-    ALGOS["QRDQN"] = QRDQN
-
 RL_ALGOS = list(ALGOS.keys())
-SAFE_METHODS = [f"{name}_Safe" for name in RL_ALGOS]
-ALL_METHODS = RL_ALGOS + SAFE_METHODS + ["RuleBased"]
+ALL_METHODS = RL_ALGOS + ["RuleBased"]
 
 
 def load_config(path: str) -> Dict[str, Any]:
@@ -74,14 +59,11 @@ def evaluate_one(
     env = make_env(env_cfg, seed=seed)
 
     model = None
-    base_method = method.replace("_Safe", "")
-    use_safe_guard = method.endswith("_Safe")
-
-    if base_method in RL_ALGOS:
-        model_path = os.path.join(data_dir, "models", base_method, f"seed_{seed}", "model.zip")
+    if method in RL_ALGOS:
+        model_path = os.path.join(data_dir, "models", method, f"seed_{seed}", "model.zip")
         if not os.path.exists(model_path):
             raise FileNotFoundError(f"Model not found: {model_path}")
-        model = _load_model(base_method, model_path, env)
+        model = _load_model(method, model_path, env)
 
     rows: List[Dict[str, Any]] = []
     action_counts = np.zeros(env.action_space.n, dtype=np.int64)
@@ -106,7 +88,7 @@ def evaluate_one(
                 action = rule_based_action(env)
             else:
                 rl_action, _state = model.predict(obs, deterministic=True)
-                action = guarded_action(env, int(rl_action)) if use_safe_guard else int(rl_action)
+                action = guarded_action(env, int(rl_action))
 
             action = int(action)
             action_counts[action] += 1

@@ -8,15 +8,6 @@ from typing import Dict, Any
 import yaml
 
 from stable_baselines3 import PPO, DQN, A2C
-try:
-    from sb3_contrib import RecurrentPPO  # type: ignore
-except Exception:
-    RecurrentPPO = None
-
-try:
-    from sb3_contrib import QRDQN  # type: ignore
-except Exception:
-    QRDQN = None
 
 from stable_baselines3.common.callbacks import EvalCallback, StopTrainingOnNoModelImprovement
 from stable_baselines3.common.monitor import Monitor
@@ -29,11 +20,6 @@ ALGOS = {
     "DQN": DQN,
     "A2C": A2C,
 }
-
-if RecurrentPPO is not None:
-    ALGOS["RecurrentPPO"] = RecurrentPPO
-if QRDQN is not None:
-    ALGOS["QRDQN"] = QRDQN
 
 
 def load_config(path: str) -> Dict[str, Any]:
@@ -52,8 +38,6 @@ DEFAULT_POLICY_BY_ALGO = {
     "PPO": "MlpPolicy",
     "A2C": "MlpPolicy",
     "DQN": "MlpPolicy",
-    "QRDQN": "MlpPolicy",
-    "RecurrentPPO": "MlpLstmPolicy",
 }
 
 
