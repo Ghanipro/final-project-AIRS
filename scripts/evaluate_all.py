@@ -3,7 +3,9 @@ import yaml
 
 from src.eval.evaluate import evaluate_one, build_leaderboard
 
-METHODS = ["PPO", "DQN", "A2C", "RecurrentPPO", "QRDQN", "RuleBased"]
+from src.eval.evaluate import RL_ALGOS
+
+METHODS = RL_ALGOS + [f"{name}_Safe" for name in RL_ALGOS] + ["RuleBased"]
 
 if __name__ == "__main__":
     with open("configs/airs_train.yaml", "r") as f:

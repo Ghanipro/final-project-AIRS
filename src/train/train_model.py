@@ -8,7 +8,15 @@ from typing import Dict, Any
 import yaml
 
 from stable_baselines3 import PPO, DQN, A2C
-from sb3_contrib import RecurrentPPO, QRDQN
+try:
+    from sb3_contrib import RecurrentPPO  # type: ignore
+except Exception:
+    RecurrentPPO = None
+
+try:
+    from sb3_contrib import QRDQN  # type: ignore
+except Exception:
+    QRDQN = None
 
 from stable_baselines3.common.callbacks import EvalCallback, StopTrainingOnNoModelImprovement
 from stable_baselines3.common.monitor import Monitor
@@ -20,9 +28,12 @@ ALGOS = {
     "PPO": PPO,
     "DQN": DQN,
     "A2C": A2C,
-    "RecurrentPPO": RecurrentPPO,
-    "QRDQN": QRDQN,
 }
+
+if RecurrentPPO is not None:
+    ALGOS["RecurrentPPO"] = RecurrentPPO
+if QRDQN is not None:
+    ALGOS["QRDQN"] = QRDQN
 
 
 def load_config(path: str) -> Dict[str, Any]:
@@ -47,6 +58,10 @@ DEFAULT_POLICY_BY_ALGO = {
 
 
 def train_one(algo: str, config_path: str, seed: int, out_dir: str = "data") -> str:
+    if algo not in ALGOS:
+        available = ", ".join(sorted(ALGOS.keys()))
+        raise ValueError(f"Algorithm '{algo}' is not available. Available: {available}")
+
     cfg = load_config(config_path)
     env_cfg = cfg.get("env", {})
     train_cfg = cfg.get("train", {})
@@ -103,7 +118,7 @@ def train_one(algo: str, config_path: str, seed: int, out_dir: str = "data") -> 
             eval_freq=eval_cfg.get("freq", 20000),
             n_eval_episodes=eval_cfg.get("n_episodes", 20),
             deterministic=True,
-            callback_on_new_best=stop_callback,
+            callback_after_eval=stop_callback,
             verbose=1
         )
 
@@ -125,6 +140,10 @@ def train_one(algo: str, config_path: str, seed: int, out_dir: str = "data") -> 
     }
     with open(os.path.join(save_root, "train_meta.json"), "w") as f:
         json.dump(meta, f, indent=2)
+
+    env.close()
+    if callback is not None and hasattr(callback, "eval_env") and callback.eval_env is not None:
+        callback.eval_env.close()
 
     return model_path
 

@@ -13,18 +13,26 @@ env:
     4: 0.60   # Security
 
   # make recovery stronger
-  p_regress_base: 0.03
+  p_regress_base: 0.04
   p_quarantine_success: 0.90
   p_quarantine_roll_back_stage: 0.75
-  p_patch_heal: 0.35
+  p_patch_heal: 0.45
 
-  intensity_drift: 0.015
-  intensity_control_k: 0.12
+  intensity_drift: 0.012
+  intensity_control_k: 0.16
 
   contain_hold_steps: 3
 
+  # reward shaping for stable anti-breach behavior
+  breach_penalty: 20.0
+  contain_bonus: 2.5
+  step_security_weight: 0.08
+  deescalation_reward_scale: 1.4
+  critical_stage3_penalty: 0.8
+  survival_bonus: 0.05
+
 train:
-  timesteps: 100000
+  timesteps: 400000
   policy_by_algo:
     PPO: "MlpPolicy"
     DQN: "MlpPolicy"
@@ -34,42 +42,45 @@ train:
 
   model_kwargs_by_algo:
     PPO:
-      learning_rate: 0.0003
-      n_steps: 1024
+      learning_rate: 0.0002
+      n_steps: 2048
       batch_size: 256
       gamma: 0.99
       gae_lambda: 0.95
-      ent_coef: 0.01
+      ent_coef: 0.02
+      clip_range: 0.2
+      n_epochs: 10
 
     A2C:
-      learning_rate: 0.0007
-      n_steps: 64
+      learning_rate: 0.0003
+      n_steps: 128
       gamma: 0.99
-      ent_coef: 0.01
+      ent_coef: 0.02
 
     DQN:
       learning_rate: 0.0001
-      buffer_size: 200000
-      learning_starts: 5000
+      buffer_size: 300000
+      learning_starts: 10000
       train_freq: 4
-      target_update_interval: 1000
-      exploration_fraction: 0.2
-      exploration_final_eps: 0.05
+      target_update_interval: 2000
+      exploration_fraction: 0.35
+      exploration_final_eps: 0.03
 
     QRDQN:
       learning_rate: 0.0001
-      buffer_size: 200000
-      learning_starts: 5000
+      buffer_size: 300000
+      learning_starts: 10000
       train_freq: 4
-      target_update_interval: 1000
-      exploration_fraction: 0.25
-      exploration_final_eps: 0.05
+      target_update_interval: 2000
+      exploration_fraction: 0.35
+      exploration_final_eps: 0.03
 
     RecurrentPPO:
-      learning_rate: 0.0003
-      n_steps: 128
+      learning_rate: 0.0002
+      n_steps: 256
       batch_size: 128
       gamma: 0.99
+      ent_coef: 0.02
       policy_kwargs:
         lstm_hidden_size: 128
         n_lstm_layers: 1
@@ -82,6 +93,7 @@ eval:
   enabled: true
   freq: 20000           # evaluate every 20k steps
   n_episodes: 20
+  episodes: 200
   early_stop_patience: 4   # stop after 4 evals with no improvement
 
 seeds: [0, 1, 2, 3, 4]

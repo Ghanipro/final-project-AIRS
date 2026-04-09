@@ -70,6 +70,10 @@ class AIRSConfig:
     stage_weight: List[float] = None
     breach_penalty: float = 5.0
     contain_bonus: float = 1.0
+    step_security_weight: float = 0.10
+    deescalation_reward_scale: float = 1.20
+    critical_stage3_penalty: float = 0.60
+    survival_bonus: float = 0.03
 
     # enterprise topology
     edges: List[Tuple[int, int]] = None
@@ -311,6 +315,10 @@ class AIRSEnv(Env):
     def step(self, action: int):
         self._t += 1
 
+        prev_sec_loss = 0.0
+        for i in range(self.n):
+            prev_sec_loss += self.cfg.stage_weight[self.c[i]] * self.cfg.criticality[i]
+
         action_type, node = self._decode_action(action)
         action_cost, avail_loss = self._apply_action(action_type, node)
         self._advance_patch_timers()
@@ -323,13 +331,22 @@ class AIRSEnv(Env):
         for i in range(self.n):
             sec_loss += self.cfg.stage_weight[self.c[i]] * self.cfg.criticality[i]
 
-        reward = -self.cfg.alpha_security * sec_loss \
+        # Reward shaped around risk reduction, not just absolute state.
+        # This encourages active de-escalation and avoids "end-episode-early" collapse.
+        sec_delta = prev_sec_loss - sec_loss
+
+        critical_mask = np.array(self.cfg.criticality) >= 0.9
+        critical_stage3plus = int(np.sum((self.c >= 3) & critical_mask))
+
+        reward = self.cfg.deescalation_reward_scale * sec_delta \
+                 - self.cfg.alpha_security * self.cfg.step_security_weight * sec_loss \
                  - self.cfg.beta_cost * action_cost \
-                 - self.cfg.gamma_avail * avail_loss
+                 - self.cfg.gamma_avail * avail_loss \
+                 - self.cfg.critical_stage3_penalty * critical_stage3plus \
+                 + self.cfg.survival_bonus
 
         breach = False
         if self.cfg.breach_on_stage4:
-            critical_mask = np.array(self.cfg.criticality) >= 0.9
             breach = np.any((self.c >= 4) & critical_mask)
 
         contained = np.all(self.c == 0) and np.max(self.b) < self.cfg.intensity_contained_threshold

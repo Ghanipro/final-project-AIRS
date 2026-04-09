@@ -1,0 +1,267 @@
+{
+  "method": "A2C_Safe",
+  "seed": 3,
+  "episodes": 200,
+  "breach_rate": 0.615,
+  "contain_rate": 0.17,
+  "avg_return": -38.40918,
+  "std_return": 36.30481420943382,
+  "avg_ep_len": 67.11,
+  "avg_max_stage": 3.15,
+  "avg_security_loss": 1.119710333471927,
+  "avg_availability_loss": 0.1846859678898028,
+  "avg_action_cost": 7.593349999999999,
+  "action_counts": [
+    0,
+    298,
+    258,
+    43,
+    202,
+    279,
+    183,
+    201,
+    126,
+    252,
+    130,
+    1510,
+    928,
+    0,
+    740,
+    664,
+    160,
+    260,
+    151,
+    278,
+    195,
+    85,
+    63,
+    4366,
+    73,
+    53,
+    88,
+    56,
+    53,
+    40,
+    42,
+    138,
+    278,
+    0,
+    205,
+    275,
+    48,
+    67,
+    113,
+    248,
+    273,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "action_counts_total": 13422,
+  "env_config": {
+    "n_nodes": 10,
+    "max_steps": 150,
+    "patch_delay_steps": 2,
+    "p_adv_base": [
+      0.03,
+      0.08,
+      0.08,
+      0.06,
+      0.0
+    ],
+    "zone_adv_mul": {
+      "0": 1.05,
+      "1": 0.95,
+      "2": 0.85,
+      "3": 0.75,
+      "4": 0.6
+    },
+    "p_regress_base": 0.04,
+    "p_quarantine_success": 0.9,
+    "p_quarantine_roll_back_stage": 0.75,
+    "p_patch_heal": 0.45,
+    "intensity_drift": 0.012,
+    "intensity_control_k": 0.16,
+    "contain_hold_steps": 3,
+    "breach_penalty": 20.0,
+    "contain_bonus": 2.5,
+    "step_security_weight": 0.08,
+    "deescalation_reward_scale": 1.4,
+    "critical_stage3_penalty": 0.8,
+    "survival_bonus": 0.05
+  },
+  "airs_config": {
+    "n_nodes": 10,
+    "max_steps": 150,
+    "patch_delay_steps": 2,
+    "p_adv_base": [
+      0.03,
+      0.08,
+      0.08,
+      0.06,
+      0.0
+    ],
+    "p_regress_base": 0.04,
+    "m_isolated": 0.7,
+    "m_patched": 0.4,
+    "m_quarantined": 0.55,
+    "m_rate_limited_stage3plus": 0.6,
+    "m_block_ip_step": 0.6,
+    "m_monitoring": [
+      1.0,
+      0.85,
+      0.7
+    ],
+    "p_quarantine_success": 0.9,
+    "p_quarantine_roll_back_stage": 0.75,
+    "p_patch_heal": 0.45,
+    "intensity_drift": 0.012,
+    "intensity_control_k": 0.16,
+    "breach_on_stage4": true,
+    "contain_hold_steps": 3,
+    "intensity_contained_threshold": 0.1,
+    "cost_noop": 0.0,
+    "cost_block_ip": 0.05,
+    "cost_isolate": 0.2,
+    "cost_quarantine": 0.08,
+    "cost_monitoring": 0.03,
+    "cost_patch": 0.12,
+    "cost_rate_limit": 0.1,
+    "avail_isolate": 0.5,
+    "avail_rate_limit": 0.25,
+    "avail_patching": 0.1,
+    "alpha_security": 1.0,
+    "beta_cost": 0.5,
+    "gamma_avail": 0.7,
+    "stage_weight": [
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "breach_penalty": 20.0,
+    "contain_bonus": 2.5,
+    "step_security_weight": 0.08,
+    "deescalation_reward_scale": 1.4,
+    "critical_stage3_penalty": 0.8,
+    "survival_bonus": 0.05,
+    "edges": [
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        4,
+        6
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        5,
+        7
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        9,
+        0
+      ],
+      [
+        9,
+        2
+      ],
+      [
+        9,
+        5
+      ]
+    ],
+    "zones": [
+      0,
+      0,
+      1,
+      1,
+      1,
+      2,
+      2,
+      3,
+      3,
+      4
+    ],
+    "node_types": [
+      0,
+      1,
+      2,
+      2,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "criticality": [
+      0.6,
+      0.6,
+      0.4,
+      0.4,
+      0.4,
+      1.0,
+      0.8,
+      1.0,
+      0.7,
+      0.5
+    ],
+    "zone_adv_mul": {
+      "0": 1.05,
+      "1": 0.95,
+      "2": 0.85,
+      "3": 0.75,
+      "4": 0.6
+    }
+  },
+  "paths": {
+    "episodes_csv": "data\\results\\A2C_Safe\\seed_3\\episodes.csv"
+  }
+}

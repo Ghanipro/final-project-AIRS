@@ -10,22 +10,35 @@ import pandas as pd
 import yaml
 
 from stable_baselines3 import PPO, DQN, A2C
-from sb3_contrib import RecurrentPPO, QRDQN
+try:
+    from sb3_contrib import RecurrentPPO  # type: ignore
+except Exception:
+    RecurrentPPO = None
+
+try:
+    from sb3_contrib import QRDQN  # type: ignore
+except Exception:
+    QRDQN = None
 
 from src.environment.airs_env import AIRSEnv, AIRSConfig
 from src.baselines.rule_based import rule_based_action
+from src.baselines.safe_policy import guarded_action
 
 
 ALGOS = {
     "PPO": PPO,
     "DQN": DQN,
     "A2C": A2C,
-    "RecurrentPPO": RecurrentPPO,
-    "QRDQN": QRDQN,
 }
 
+if RecurrentPPO is not None:
+    ALGOS["RecurrentPPO"] = RecurrentPPO
+if QRDQN is not None:
+    ALGOS["QRDQN"] = QRDQN
+
 RL_ALGOS = list(ALGOS.keys())
-ALL_METHODS = RL_ALGOS + ["RuleBased"]
+SAFE_METHODS = [f"{name}_Safe" for name in RL_ALGOS]
+ALL_METHODS = RL_ALGOS + SAFE_METHODS + ["RuleBased"]
 
 
 def load_config(path: str) -> Dict[str, Any]:
@@ -56,16 +69,19 @@ def evaluate_one(
     cfg = load_config(config_path)
     env_cfg = cfg["env"]
     eval_cfg = cfg.get("eval", {})
-    n_episodes = int(episodes or eval_cfg.get("episodes", 200))
+    n_episodes = int(episodes or eval_cfg.get("episodes", eval_cfg.get("n_episodes", 200)))
 
     env = make_env(env_cfg, seed=seed)
 
     model = None
-    if method in RL_ALGOS:
-        model_path = os.path.join(data_dir, "models", method, f"seed_{seed}", "model.zip")
+    base_method = method.replace("_Safe", "")
+    use_safe_guard = method.endswith("_Safe")
+
+    if base_method in RL_ALGOS:
+        model_path = os.path.join(data_dir, "models", base_method, f"seed_{seed}", "model.zip")
         if not os.path.exists(model_path):
             raise FileNotFoundError(f"Model not found: {model_path}")
-        model = _load_model(method, model_path, env)
+        model = _load_model(base_method, model_path, env)
 
     rows: List[Dict[str, Any]] = []
     action_counts = np.zeros(env.action_space.n, dtype=np.int64)
@@ -89,7 +105,8 @@ def evaluate_one(
             if method == "RuleBased":
                 action = rule_based_action(env)
             else:
-                action, _state = model.predict(obs, deterministic=True)
+                rl_action, _state = model.predict(obs, deterministic=True)
+                action = guarded_action(env, int(rl_action)) if use_safe_guard else int(rl_action)
 
             action = int(action)
             action_counts[action] += 1

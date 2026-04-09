@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 
 from src.environment.airs_env import AIRSEnv, AIRSConfig
 from src.environment.enterprise_topology import EnterpriseTopology
-from src.demo.demo_runner import load_model, step_demo
+from src.demo.demo_runner import load_model, step_demo, ALGOS
 
 
 def build_graph(topology: EnterpriseTopology):
@@ -80,7 +80,11 @@ st.title("AIRS Enterprise Demo (10-node network)")
 topology = EnterpriseTopology()
 G = build_graph(topology)
 
-algo = st.sidebar.selectbox("Policy", ["PPO", "DQN", "A2C", "RecurrentPPO", "QRDQN", "RuleBased", "Manual"])
+available_rl = [name for name in ALGOS.keys() if name != "RuleBased"]
+safe_variants = [f"{name}_Safe" for name in available_rl]
+policies = available_rl + safe_variants + ["RuleBased", "Manual"]
+default_index = policies.index("PPO_Safe") if "PPO_Safe" in policies else 0
+algo = st.sidebar.selectbox("Policy", policies, index=default_index)
 seed = st.sidebar.number_input("Seed", min_value=0, max_value=999, value=0)
 
 if "env" not in st.session_state:
@@ -99,8 +103,9 @@ model_path = st.sidebar.text_input(
     value="data/models/PPO/seed_0/model.zip",
 )
 if algo not in ("Manual", "RuleBased"):
+    base_algo = algo.replace("_Safe", "")
     if st.sidebar.button("Load model"):
-        st.session_state.model = load_model(algo, model_path, env)
+        st.session_state.model = load_model(base_algo, model_path, env)
         st.sidebar.success("Model loaded")
 
 st.subheader("Network State")
