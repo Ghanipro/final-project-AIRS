@@ -1,0 +1,22 @@
+[
+  {
+    "round": 0,
+    "blue_path": "data\\marl\\round_0\\blue_model.zip",
+    "red_path": "data\\marl\\round_0\\red_model.zip",
+    "blue_eval": {
+      "blue_algo": "PPO",
+      "blue_model_path": "data\\marl\\round_0\\blue_model.zip",
+      "red_model_path": "RuleBasedRed",
+      "episodes": 50,
+      "breach_rate": 0.38,
+      "contain_rate": 0.24,
+      "avg_return": -6.058080000000001,
+      "avg_ep_len": 109.62,
+      "avg_time_to_breach": 62.10526315789474,
+      "avg_time_to_containment": 120.91666666666667,
+      "avg_security_loss": 0.3772229439607071,
+      "avg_availability_loss": 0.06615399563535798,
+      "avg_blue_cost": 0.07853020176881985
+    }
+  }
+]

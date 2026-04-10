@@ -1,0 +1,82 @@
+[
+  {
+    "round": "pretrain",
+    "blue_path": "data\\marl\\DQN\\pretrain\\blue_model.zip",
+    "red_path": "RuleBasedRed",
+    "blue_eval": {
+      "blue_algo": "DQN",
+      "blue_model_path": "data\\marl\\DQN\\pretrain\\blue_model.zip",
+      "red_model_path": "RuleBasedRed",
+      "episodes": 100,
+      "breach_rate": 0.65,
+      "contain_rate": 0.23,
+      "avg_return": -8.95253,
+      "avg_ep_len": 77.93,
+      "avg_time_to_breach": 57.30769230769231,
+      "avg_time_to_containment": 98.6086956521739,
+      "avg_security_loss": 0.28215740800013306,
+      "avg_availability_loss": 0.11655102854254165,
+      "avg_blue_cost": 0.05786056107491502
+    }
+  },
+  {
+    "round": 0,
+    "blue_path": "data\\marl\\DQN\\round_0\\blue_model.zip",
+    "red_path": "data\\marl\\DQN\\round_0\\red_model.zip",
+    "blue_eval": {
+      "blue_algo": "DQN",
+      "blue_model_path": "data\\marl\\DQN\\round_0\\blue_model.zip",
+      "red_model_path": "RuleBasedRed",
+      "episodes": 100,
+      "breach_rate": 0.54,
+      "contain_rate": 0.26,
+      "avg_return": 0.4047299999999967,
+      "avg_ep_len": 91.64,
+      "avg_time_to_breach": 67.31481481481481,
+      "avg_time_to_containment": 97.26923076923077,
+      "avg_security_loss": 0.24944781258031654,
+      "avg_availability_loss": 0.07259839239232105,
+      "avg_blue_cost": 0.047736873139259645
+    }
+  },
+  {
+    "round": 1,
+    "blue_path": "data\\marl\\DQN\\round_1\\blue_model.zip",
+    "red_path": "data\\marl\\DQN\\round_1\\red_model.zip",
+    "blue_eval": {
+      "blue_algo": "DQN",
+      "blue_model_path": "data\\marl\\DQN\\round_1\\blue_model.zip",
+      "red_model_path": "RuleBasedRed",
+      "episodes": 100,
+      "breach_rate": 0.63,
+      "contain_rate": 0.16,
+      "avg_return": -3.696769999999998,
+      "avg_ep_len": 91.58,
+      "avg_time_to_breach": 69.82539682539682,
+      "avg_time_to_containment": 100.5625,
+      "avg_security_loss": 0.257183684330881,
+      "avg_availability_loss": 0.0679835835647551,
+      "avg_blue_cost": 0.05772020080397868
+    }
+  },
+  {
+    "round": 2,
+    "blue_path": "data\\marl\\DQN\\round_2\\blue_model.zip",
+    "red_path": "data\\marl\\DQN\\round_2\\red_model.zip",
+    "blue_eval": {
+      "blue_algo": "DQN",
+      "blue_model_path": "data\\marl\\DQN\\round_2\\blue_model.zip",
+      "red_model_path": "RuleBasedRed",
+      "episodes": 100,
+      "breach_rate": 0.36,
+      "contain_rate": 0.51,
+      "avg_return": -8.053220000000001,
+      "avg_ep_len": 70.09,
+      "avg_time_to_breach": 39.583333333333336,
+      "avg_time_to_containment": 71.25490196078431,
+      "avg_security_loss": 0.25685796995275934,
+      "avg_availability_loss": 0.08556798245713461,
+      "avg_blue_cost": 0.08862903138840585
+    }
+  }
+]

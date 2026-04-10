@@ -1,0 +1,14 @@
+{
+  "blue_algo": "PPO",
+  "red_model_path": "RuleBasedRed",
+  "episodes": 200,
+  "breach_rate": 0.905,
+  "contain_rate": 0.02,
+  "avg_return": -22.389055,
+  "avg_ep_len": 64.54,
+  "avg_time_to_breach": 58.790055248618785,
+  "avg_time_to_containment": 4.25,
+  "avg_security_loss": 0.6697459240522314,
+  "avg_availability_loss": 0.08408763942391449,
+  "avg_blue_cost": 0.10964969637629123
+}

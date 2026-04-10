@@ -3,7 +3,7 @@ from __future__ import annotations
 import os
 import json
 from dataclasses import asdict
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 import yaml
 
@@ -41,7 +41,13 @@ DEFAULT_POLICY_BY_ALGO = {
 }
 
 
-def train_one(algo: str, config_path: str, seed: int, out_dir: str = "data") -> str:
+def train_one(
+    algo: str,
+    config_path: str,
+    seed: int,
+    out_dir: str = "data",
+    warm_start_model: Optional[str] = None,
+) -> str:
     if algo not in ALGOS:
         available = ", ".join(sorted(ALGOS.keys()))
         raise ValueError(f"Algorithm '{algo}' is not available. Available: {available}")
@@ -73,14 +79,18 @@ def train_one(algo: str, config_path: str, seed: int, out_dir: str = "data") -> 
     per_algo = train_cfg.get("model_kwargs_by_algo", {}).get(algo, {})
     model_kwargs.update(per_algo)
 
-    model = model_cls(
-        policy,
-        env,
-        verbose=1,
-        seed=seed,
-        tensorboard_log=log_root,
-        **model_kwargs
-    )
+    if warm_start_model and os.path.exists(warm_start_model):
+        model = model_cls.load(warm_start_model, env=env)
+        model.set_random_seed(seed)
+    else:
+        model = model_cls(
+            policy,
+            env,
+            verbose=1,
+            seed=seed,
+            tensorboard_log=log_root,
+            **model_kwargs
+        )
 
     # Eval + Early stopping
     eval_cfg = cfg.get("eval", {})
@@ -118,6 +128,7 @@ def train_one(algo: str, config_path: str, seed: int, out_dir: str = "data") -> 
         "algo": algo,
         "seed": seed,
         "timesteps": timesteps,
+        "warm_start_model": warm_start_model,
         "env_config": env_cfg,
         "train_config": train_cfg,
         "airs_config_dataclass": asdict(AIRSConfig(**env_cfg)),
@@ -140,7 +151,8 @@ if __name__ == "__main__":
     parser.add_argument("--config", type=str, default="configs/airs_train.yaml")
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--out", type=str, default="data")
+    parser.add_argument("--warm-start", type=str, default=None)
     args = parser.parse_args()
 
-    path = train_one(args.algo, args.config, seed=args.seed, out_dir=args.out)
+    path = train_one(args.algo, args.config, seed=args.seed, out_dir=args.out, warm_start_model=args.warm_start)
     print(f"Saved model to: {path}")

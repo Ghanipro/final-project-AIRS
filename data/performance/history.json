@@ -1,0 +1,77 @@
+[
+  {
+    "algo": "PPO",
+    "seed": 0,
+    "final_model": "data\\models\\PPO\\seed_0\\model.zip"
+  },
+  {
+    "algo": "PPO",
+    "seed": 1,
+    "final_model": "data\\models\\PPO\\seed_1\\model.zip"
+  },
+  {
+    "algo": "PPO",
+    "seed": 2,
+    "final_model": "data\\models\\PPO\\seed_2\\model.zip"
+  },
+  {
+    "algo": "PPO",
+    "seed": 3,
+    "final_model": "data\\models\\PPO\\seed_3\\model.zip"
+  },
+  {
+    "algo": "PPO",
+    "seed": 4,
+    "final_model": "data\\models\\PPO\\seed_4\\model.zip"
+  },
+  {
+    "algo": "DQN",
+    "seed": 0,
+    "final_model": "data\\models\\DQN\\seed_0\\model.zip"
+  },
+  {
+    "algo": "DQN",
+    "seed": 1,
+    "final_model": "data\\models\\DQN\\seed_1\\model.zip"
+  },
+  {
+    "algo": "DQN",
+    "seed": 2,
+    "final_model": "data\\models\\DQN\\seed_2\\model.zip"
+  },
+  {
+    "algo": "DQN",
+    "seed": 3,
+    "final_model": "data\\models\\DQN\\seed_3\\model.zip"
+  },
+  {
+    "algo": "DQN",
+    "seed": 4,
+    "final_model": "data\\models\\DQN\\seed_4\\model.zip"
+  },
+  {
+    "algo": "A2C",
+    "seed": 0,
+    "final_model": "data\\models\\A2C\\seed_0\\model.zip"
+  },
+  {
+    "algo": "A2C",
+    "seed": 1,
+    "final_model": "data\\models\\A2C\\seed_1\\model.zip"
+  },
+  {
+    "algo": "A2C",
+    "seed": 2,
+    "final_model": "data\\models\\A2C\\seed_2\\model.zip"
+  },
+  {
+    "algo": "A2C",
+    "seed": 3,
+    "final_model": "data\\models\\A2C\\seed_3\\model.zip"
+  },
+  {
+    "algo": "A2C",
+    "seed": 4,
+    "final_model": "data\\models\\A2C\\seed_4\\model.zip"
+  }
+]

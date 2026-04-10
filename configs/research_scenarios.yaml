@@ -1,0 +1,35 @@
+scenarios:
+  train_easy:
+    env:
+      p_adv_base: [0.02, 0.06, 0.06, 0.04, 0.0]
+      p_regress_base: 0.05
+      intensity_drift: 0.008
+      intensity_control_k: 0.18
+      zone_adv_mul:
+        0: 1.0
+        1: 0.9
+        2: 0.8
+        3: 0.7
+        4: 0.55
+    train:
+      timesteps: 250000
+
+  train_base:
+    env: {}
+    train:
+      timesteps: 400000
+
+  train_hard:
+    env:
+      p_adv_base: [0.05, 0.12, 0.12, 0.10, 0.0]
+      p_regress_base: 0.02
+      intensity_drift: 0.025
+      intensity_control_k: 0.12
+      zone_adv_mul:
+        0: 1.2
+        1: 1.05
+        2: 0.95
+        3: 0.85
+        4: 0.7
+    train:
+      timesteps: 600000

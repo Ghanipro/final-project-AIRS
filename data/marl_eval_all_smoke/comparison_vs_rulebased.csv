@@ -1,0 +1,4 @@
+blue_algo,beats_rulebased_all_metrics,beats_breach_rate,beats_contain_rate,beats_avg_return,beats_avg_ep_len,beats_avg_security_loss,beats_avg_availability_loss,beats_avg_blue_cost,delta_breach_rate,delta_contain_rate,delta_avg_return,delta_avg_ep_len,delta_avg_security_loss,delta_avg_availability_loss,delta_avg_blue_cost
+PPO,False,True,True,False,False,True,True,False,-0.004999999999999999,0.45999999999999996,-8.489090000000001,-82.59,-0.11530331391959697,-0.029550274760140688,0.015929981130140186
+DQN,False,False,True,False,False,True,False,False,0.025,0.20499999999999996,-16.510984999999998,-57.525000000000006,-0.08609940101352725,5.8478394580438464e-05,0.052125177301939773
+A2C,False,False,True,False,False,True,True,False,0.0,0.45999999999999996,-7.239050000000001,-78.605,-0.10771152456368652,-0.03581659557011152,0.006152842634653412

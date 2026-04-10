@@ -1,0 +1,77 @@
+env:
+  n_nodes: 10
+  max_steps: 150
+  patch_delay_steps: 2
+  p_adv_base:
+  - 0.05
+  - 0.12
+  - 0.12
+  - 0.1
+  - 0.0
+  zone_adv_mul:
+    0: 1.2
+    1: 1.05
+    2: 0.95
+    3: 0.85
+    4: 0.7
+  p_regress_base: 0.02
+  p_quarantine_success: 0.9
+  p_quarantine_roll_back_stage: 0.75
+  p_patch_heal: 0.45
+  intensity_drift: 0.025
+  intensity_control_k: 0.12
+  contain_hold_steps: 3
+  breach_penalty: 20.0
+  contain_bonus: 2.5
+  step_security_weight: 0.08
+  deescalation_reward_scale: 1.4
+  critical_stage3_penalty: 0.8
+  survival_bonus: 0.05
+train:
+  timesteps: 600000
+  policy_by_algo:
+    PPO: MlpPolicy
+    DQN: MlpPolicy
+    A2C: MlpPolicy
+  model_kwargs_by_algo:
+    PPO:
+      learning_rate: 0.00015
+      n_steps: 2048
+      batch_size: 256
+      gamma: 0.99
+      gae_lambda: 0.95
+      ent_coef: 0.005
+      clip_range: 0.2
+      n_epochs: 10
+      vf_coef: 0.8
+      max_grad_norm: 0.5
+    A2C:
+      learning_rate: 0.0002
+      n_steps: 256
+      gamma: 0.99
+      gae_lambda: 0.95
+      ent_coef: 0.005
+      vf_coef: 0.7
+      max_grad_norm: 0.5
+    DQN:
+      learning_rate: 5.0e-05
+      buffer_size: 400000
+      learning_starts: 20000
+      train_freq: 4
+      gradient_steps: 2
+      target_update_interval: 1000
+      exploration_fraction: 0.45
+      exploration_final_eps: 0.01
+      batch_size: 256
+  curriculum_phase: train_hard
+logging:
+  log_root: data/logs
+  tb_name: AIRS_Enterprise
+eval:
+  enabled: true
+  freq: 20000
+  n_episodes: 20
+  episodes: 200
+  early_stop_patience: 4
+seeds:
+- 1

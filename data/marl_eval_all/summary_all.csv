@@ -1,0 +1,5 @@
+blue_algo,blue_model_path,red_model_path,episodes,breach_rate,contain_rate,avg_return,avg_ep_len,avg_time_to_breach,avg_time_to_containment,avg_security_loss,avg_availability_loss,avg_blue_cost,status
+RuleBasedBlue,RuleBasedBlue,RuleBasedRed,200,0.015,0.525,15.689630000000001,132.055,84.0,117.70476190476191,0.270700112139682,0.06632958293070751,0.045126472391840505,
+PPO,C:/Users/MOHAMMED GHANI/Desktop/final project AIRS/final-project-AIRS/data/marl_all/PPO/pretrain/blue_model.zip,RuleBasedRed,200,0.02,0.715,17.373690000000007,119.855,70.75,110.05594405594405,0.21842116553345733,0.055848911406916536,0.04249510012618624,ok
+DQN,C:/Users/MOHAMMED GHANI/Desktop/final project AIRS/final-project-AIRS/data/marl_all/DQN/pretrain/blue_model.zip,RuleBasedRed,200,0.015,0.97,11.867805,77.58,46.333333333333336,76.94329896907216,0.1683360323008678,0.06079383466104922,0.04501916980914055,ok
+A2C,data/marl_all/A2C/round_2/blue_model.zip,RuleBasedRed,200,0.01,0.815,17.358000000000004,115.185,64.0,108.33742331288343,0.21957922999108134,0.055389784031643144,0.043327042526936525,ok

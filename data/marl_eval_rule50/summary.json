@@ -1,0 +1,15 @@
+{
+  "blue_algo": "RuleBasedBlue",
+  "blue_model_path": "RuleBasedBlue",
+  "red_model_path": "RuleBasedRed",
+  "episodes": 50,
+  "breach_rate": 0.02,
+  "contain_rate": 0.58,
+  "avg_return": 18.41102,
+  "avg_ep_len": 128.18,
+  "avg_time_to_breach": 99.0,
+  "avg_time_to_containment": 114.13793103448276,
+  "avg_security_loss": 0.23241638789120775,
+  "avg_availability_loss": 0.06212681626343092,
+  "avg_blue_cost": 0.04230724256659116
+}
